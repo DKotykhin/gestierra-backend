@@ -123,6 +123,31 @@ class UserService {
             throw new GraphQLError("Can't set new password")
         } else return updatedUser;
     }
+
+    async updatePassword(password, token) {
+        await userValidate({ password });
+
+        const _id = checkAuth(token);
+        const user = await UserModel.findById(_id);
+        if (!user) {
+            throw new GraphQLError("Can't find user")
+        };
+
+        const isValidPass = await bcrypt.compare(password, user.passwordHash);
+        if (isValidPass) {
+            throw new GraphQLError("The same password!", { extensions: { code: 'BAD_USER_INPUT' } })
+        }
+        const passwordHash = await createPasswordHash(password);
+        const updatedUser = await UserModel.findOneAndUpdate(
+            { _id },
+            { passwordHash },
+            { new: true },
+        );
+        if (!updatedUser) {
+            throw new GraphQLError("Can't change password")
+        }
+        return updatedUser;
+    }
 }
 
 export default new UserService;

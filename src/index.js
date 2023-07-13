@@ -1,38 +1,63 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from 'cors';
+import http from 'http';
 
 import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
+import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default';
 
-import { typeDefs } from "./schema/typeDefs.js";
+import { userTypeDefs, postTypeDefs } from "./schema/_index.js";
 import { queryResolver, mutationResolver } from "./resolvers/_index.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import router from './router/router.js';
 
 import 'dotenv/config';
 
 mongoose
     .connect(process.env.MONGO_DB)
-    .then(() => console.log('Mongoose DB successfully connected...'))
-    .catch((err) => console.log('DB Error:', err))
+    .then(() => console.log('Mongo DB successfully connected...'))
+    .catch((err) => console.log('Mongo DB Error:', err))
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/api', router);
+app.use('/api/upload', express.static('uploads'));
 
 const port = process.env.PORT || 4004;
 
+const httpServer = http.createServer(app);
+
 const server = new ApolloServer({
-    typeDefs,
+    typeDefs: userTypeDefs.concat(postTypeDefs),
     resolvers: { ...queryResolver, ...mutationResolver },
+    plugins: [
+        ApolloServerPluginDrainHttpServer({ httpServer }),
+        {
+            async serverWillStart() {
+                console.log(`Apollo server has been started on port ${port}`);
+            },
+        },
+        process.env.NODE_ENV === 'production'
+            ? ApolloServerPluginLandingPageProductionDefault()
+            : ApolloServerPluginLandingPageLocalDefault(),
+    ],
 });
 
-const { url } = await startStandaloneServer(server, {
-    listen: { port },
-    context: async ({ req, res }) => {
-        const token = req.headers.authorization || '';
-        return { token };
-    },
-});
+await server.start();
 
-console.log(`🚀  Server ready at: ${url}`);
+app.use('/graphql', cors(),
+    expressMiddleware(server, {
+        context: async ({ req, res }) => {
+            const token = req.headers.authorization || '';
+            return { token };
+        },
+    }),
+);
+
+app.use(errorHandler);
+
+await new Promise((resolve) => httpServer.listen({ port }, resolve));

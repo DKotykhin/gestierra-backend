@@ -1,4 +1,4 @@
-export const typeDefs = `#graphql
+export const userTypeDefs = `#graphql
   scalar Date
   type User {
       _id: ID!
@@ -47,5 +47,6 @@ export const typeDefs = `#graphql
     userDelete(_id: ID!): UserDeleteResponse
     userResetPassword(email: String!): ResetPasswordResponse
     userSetNewPassword(setPasswordInput: UserSetPasswordInput): UserPasswordResponse
+    userUpdatePassword(password: String!): UserPasswordResponse
   }
 `;
