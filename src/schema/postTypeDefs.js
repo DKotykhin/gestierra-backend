@@ -59,6 +59,7 @@ export const postTypeDefs = `#graphql
 
     type Query {
         getPosts: [Post]
+        getOnePost(_id: String): Post
     }
     type Mutation {
         createPost(createPostInput: CreatePost): Post

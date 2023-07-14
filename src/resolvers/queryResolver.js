@@ -25,6 +25,12 @@ const queryResolver = {
 
             return posts;
         },
+
+        getOnePost: async (parent, { _id }, contextValue) => {
+            const post = await postService.getOnePost({ _id });
+
+            return post;
+        },
     },
 };
 

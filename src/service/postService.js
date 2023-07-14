@@ -10,6 +10,10 @@ class PostService {
         return await PostModel.find().sort({ createdAt: -1 });
     }
 
+    async getOnePost(id) {
+        return PostModel.findById(id)
+    }
+
     async create(data, token) {
         const userId = checkAuth(token);
         if (userId) {

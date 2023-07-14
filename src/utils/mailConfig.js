@@ -11,7 +11,7 @@ export const mailConfig = async (token, email) => {
     });
 
     const message = {
-        from: '"Gestierra" <info@mytodolist.fun>',
+        from: `"Gestierra" <${process.env.EMAIL_ADDRESS}>`,
         to: email,
         subject: 'Restore password',
         text: 'Please, follow the link to set new password',
