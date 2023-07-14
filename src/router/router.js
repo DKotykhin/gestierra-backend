@@ -11,14 +11,21 @@ router.post('/upload',
         req.userId = id;
         next()
     },
-    multerConfig.single('image'),
+    multerConfig.fields([
+        { name: 'images', maxCount: 10 },
+    ]),
     resizeImages,
-    function (req, res) {
-                
-        res.json({
-            imageURL: `/upload/${req.fileName}`,
-            message: "Image successfully upload.",
-        });
+    function (req, res, next) {
+        try {
+            const imagesURL = req.files.images.map(item => `/upload/${item.filename}`);
+
+            res.json({
+                imagesURL,
+                message: "Images successfully upload.",
+            });
+        } catch (error) {
+            next(error)
+        }
     },
 );
 

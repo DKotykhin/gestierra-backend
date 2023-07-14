@@ -16,6 +16,7 @@ export const postTypeDefs = `#graphql
         yearBuilt: Date
         price: Float
         floor: Int
+        imagesURL: [String]
         createdAt: Date
     }
     type PostDeleteResponse {        
@@ -31,7 +32,7 @@ export const postTypeDefs = `#graphql
         latitude: Float
         longitude: Float
     }
-    input CreatePost {
+    input CreatePostInput {
         title: String
         address: String
         coordinates: InputCoordinates   
@@ -42,8 +43,9 @@ export const postTypeDefs = `#graphql
         yearBuilt: Date
         price: Float
         floor: Int
+        imagesURL: [String]
     }
-    input UpdatePost {
+    input UpdatePostInput {
         _id: ID!
         title: String
         address: String
@@ -55,6 +57,7 @@ export const postTypeDefs = `#graphql
         yearBuilt: Date
         price: Float
         floor: Int
+        imagesURL: [String]
     }
 
     type Query {
@@ -62,8 +65,8 @@ export const postTypeDefs = `#graphql
         getOnePost(_id: String): Post
     }
     type Mutation {
-        createPost(createPostInput: CreatePost): Post
-        updatePost(updatePostInput: UpdatePost): Post
+        createPost(createPostInput: CreatePostInput): Post
+        updatePost(updatePostInput: UpdatePostInput): Post
         deletePost(_id: ID!): PostDeleteResponse
     }
 `;

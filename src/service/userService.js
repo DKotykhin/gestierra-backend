@@ -124,6 +124,23 @@ class UserService {
         } else return updatedUser;
     }
 
+    async confirmPassword(password, token) {
+        await userValidate({ password });
+
+        const _id = checkAuth(token);
+        const user = await UserModel.findById(_id);
+        if (!user) {
+            throw new GraphQLError("Can't find user")
+        };
+        const isValidPass = await bcrypt.compare(password, user.passwordHash);
+        if (!isValidPass) {
+            throw new GraphQLError("Wrong password!")
+        } else return {
+            status: true,
+            message: 'Password confirmed'
+        }
+    }
+
     async updatePassword(password, token) {
         await userValidate({ password });
 

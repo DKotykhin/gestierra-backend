@@ -42,6 +42,12 @@ const mutationResolver = {
             }
         },
 
+        userConfirmPassword: async (parent, { password }, contextValue) => {
+            const status = await userService.confirmPassword(password, contextValue.token);
+
+            return { ...status };
+        },
+
         userUpdatePassword: async (parent, { password }, contextValue) => {
             const updatedUser = await userService.updatePassword(password, contextValue.token);
 

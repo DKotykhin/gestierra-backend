@@ -15,6 +15,7 @@ const postSchema = new Schema({
     yearBuilt: Date,
     price: Number,
     floor: Number,
+    imagesURL: [String],
 }, {
     timestamps: true,
     versionKey: false

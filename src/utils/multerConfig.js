@@ -24,5 +24,5 @@ const fileFilter = (req, file, cb) => {
 export const multerConfig = multer({
     storage,
     fileFilter,
-    limits: { fileSize: 10240000, files: 1, fields: 2 }, // 10 Mb
+    limits: { fileSize: 10240000, files: 10, fields: 20 }, // 10 Mb
 });

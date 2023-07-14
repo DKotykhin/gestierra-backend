@@ -47,6 +47,7 @@ export const userTypeDefs = `#graphql
     userDelete(_id: ID!): UserDeleteResponse
     userResetPassword(email: String!): ResetPasswordResponse
     userSetNewPassword(setPasswordInput: UserSetPasswordInput): UserPasswordResponse
+    userConfirmPassword(password: String!): UserPasswordResponse
     userUpdatePassword(password: String!): UserPasswordResponse
   }
 `;
