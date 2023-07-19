@@ -8,7 +8,7 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default';
 
-import { userTypeDefs, postTypeDefs } from "./schema/_index.js";
+import { userTypeDefs, residentialTypeDefs, camposTypeDefs } from "./schema/_index.js";
 import { queryResolver, mutationResolver } from "./resolvers/_index.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import router from './router/router.js';
@@ -32,7 +32,7 @@ const port = process.env.PORT || 4004;
 const httpServer = http.createServer(app);
 
 const server = new ApolloServer({
-    typeDefs: userTypeDefs.concat(postTypeDefs),
+    typeDefs: userTypeDefs.concat(residentialTypeDefs, camposTypeDefs),
     resolvers: { ...queryResolver, ...mutationResolver },
     plugins: [
         ApolloServerPluginDrainHttpServer({ httpServer }),

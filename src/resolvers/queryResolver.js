@@ -1,5 +1,6 @@
 import userService from '../service/userService.js';
-import postService from '../service/postService.js';
+import residentialService from '../service/residentialService.js';
+import camposService from '../service/camposService.js';
 
 const queryResolver = {
     Query: {
@@ -20,14 +21,26 @@ const queryResolver = {
             };
         },
 
-        getPosts: async (parent, args, contextValue) => {
-            const posts = await postService.getPosts();
+        getResidentialPosts: async (parent, args, contextValue) => {
+            const posts = await residentialService.getPosts();
 
             return posts;
         },
 
-        getOnePost: async (parent, { _id }, contextValue) => {
-            const post = await postService.getOnePost({ _id });
+        getOneResidentialPost: async (parent, { _id }, contextValue) => {
+            const post = await residentialService.getOnePost(_id);
+
+            return post;
+        },
+
+        getCamposPosts: async (parent, args, contextValue) => {
+            const posts = await camposService.getPosts();
+
+            return posts;
+        },
+
+        getOneCamposPost: async (parent, { _id }, contextValue) => {
+            const post = await camposService.getOnePost(_id);
 
             return post;
         },

@@ -1,5 +1,6 @@
 import userService from '../service/userService.js';
-import postService from '../service/postService.js';
+import residentialService from '../service/residentialService.js';
+import camposService from '../service/camposService.js';
 
 const mutationResolver = {
     Mutation: {
@@ -59,30 +60,57 @@ const mutationResolver = {
             }
         },
 
-        createPost: async (parent, { createPostInput }, contextValue) => {
-            const newPost = await postService.create(createPostInput, contextValue.token);
+        createResidentialPost: async (parent, { createResidentialPostInput }, contextValue) => {
+            const newPost = await residentialService.create(createResidentialPostInput, contextValue.token);
 
             return {
                 ...newPost._doc,
-                message: 'Post successfully created'
+                message: 'Residential Post successfully created'
             };
         },
 
-        updatePost: async (parent, { updatePostInput }, contextValue) => {
-            const updatedPost = await postService.update(updatePostInput, contextValue.token);
+        updateResidentialPost: async (parent, { updateResidentialPostInput }, contextValue) => {
+            const updatedPost = await residentialService.update(updateResidentialPostInput, contextValue.token);
 
             return {
                 ...updatedPost._doc,
-                message: 'Post successfully updated'
+                message: 'Residential Post successfully updated'
             };
         },
 
-        deletePost: async (parent, { _id }, contextValue) => {
-            const postStatus = await postService.delete(_id, contextValue.token)
+        deleteResidentialPost: async (parent, { _id }, contextValue) => {
+            const postStatus = await residentialService.delete(_id, contextValue.token)
 
             return {
                 postStatus,
-                message: 'Post successfully deleted'
+                message: 'Residential Post successfully deleted'
+            }
+        },
+
+        createCamposPost: async (parent, { createCamposPostInput }, contextValue) => {
+            const newPost = await camposService.create(createCamposPostInput, contextValue.token);
+
+            return {
+                ...newPost._doc,
+                message: 'Campos Post successfully created'
+            };
+        },
+
+        updateCamposPost: async (parent, { updateCamposPostInput }, contextValue) => {
+            const updatedPost = await camposService.update(updateCamposPostInput, contextValue.token);
+
+            return {
+                ...updatedPost._doc,
+                message: 'Campos Post successfully updated'
+            };
+        },
+
+        deleteCamposPost: async (parent, { _id }, contextValue) => {
+            const postStatus = await camposService.delete(_id, contextValue.token)
+
+            return {
+                postStatus,
+                message: 'Campos Post successfully deleted'
             }
         },
     }

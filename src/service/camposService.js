@@ -1,23 +1,23 @@
 import { GraphQLError } from 'graphql';
 
-import PostModel from '../models/Post.js';
+import CamposModel from '../models/Campos.js';
 
 import { checkAuth } from '../utils/_index.js';
 
-class PostService {
+class CamposService {
 
     async getPosts() {
-        return await PostModel.find().sort({ createdAt: -1 });
+        return await CamposModel.find().sort({ createdAt: -1 });
     }
 
     async getOnePost(id) {
-        return PostModel.findById(id)
+        return CamposModel.findById(id)
     }
 
     async create(data, token) {
         const userId = checkAuth(token);
         if (userId) {
-            const doc = new PostModel({
+            const doc = new CamposModel({
                 ...data
             });
             const post = await doc.save();
@@ -33,7 +33,7 @@ class PostService {
         const userId = checkAuth(token);
         if (userId) {
             const { _id, ...rest } = data;
-            const updatedPost = await PostModel.findOneAndUpdate(
+            const updatedPost = await CamposModel.findOneAndUpdate(
                 { _id, },
                 {
                     $set: {
@@ -53,7 +53,7 @@ class PostService {
     async delete(_id, token) {
         const userId = checkAuth(token);
         if (userId) {
-            const postStatus = await PostModel.deleteOne({ _id });
+            const postStatus = await CamposModel.deleteOne({ _id });
             if (!postStatus.deletedCount) {
                 throw new GraphQLError("Deleted forbidden")
             }
@@ -63,4 +63,4 @@ class PostService {
     }
 }
 
-export default new PostService;
+export default new CamposService;
