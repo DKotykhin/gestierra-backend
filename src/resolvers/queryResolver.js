@@ -21,8 +21,8 @@ const queryResolver = {
             };
         },
 
-        getResidentialPosts: async (parent, args, contextValue) => {
-            const posts = await residentialService.getPosts();
+        getResidentialPosts: async (parent, { residentialParamsInput }, contextValue) => {
+            const posts = await residentialService.getPosts(residentialParamsInput);
 
             return posts;
         },
@@ -33,8 +33,8 @@ const queryResolver = {
             return post;
         },
 
-        getCamposPosts: async (parent, args, contextValue) => {
-            const posts = await camposService.getPosts();
+        getCamposPosts: async (parent, { camposParamsInput }, contextValue) => {
+            const posts = await camposService.getPosts(camposParamsInput);
 
             return posts;
         },

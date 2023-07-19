@@ -44,6 +44,17 @@ export const camposTypeDefs = `#graphql
         deletedCount: Int
     }    
 
+    input PriceRange {
+        minPrice: Int
+        maxPrice: Int
+    }
+    input CamposParamsInput {
+        advertiseType: AdvertiseTypes
+        propertyType: PropertyTypes
+        priceRange: PriceRange
+        bathRoom: Int
+        bedRoom: Int
+    }
     input CreateCamposPostInput {
         title: String
         advertiseType: AdvertiseTypes
@@ -85,7 +96,7 @@ export const camposTypeDefs = `#graphql
     }
 
     type Query {
-        getCamposPosts: [CamposPost]
+        getCamposPosts(camposParamsInput: CamposParamsInput): [CamposPost]
         getOneCamposPost(_id: String): CamposPost
     }
     type Mutation {

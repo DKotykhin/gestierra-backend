@@ -6,12 +6,15 @@ import { checkAuth } from '../utils/_index.js';
 
 class CamposService {
 
-    async getPosts() {
-        return await CamposModel.find().sort({ createdAt: -1 });
+    async getPosts(params) {
+        const { advertiseType, bathRoom, bedRoom, propertyType, priceRange: { minPrice, maxPrice } } = params;
+        return await CamposModel
+            .find({ advertiseType, bathRoom, bedRoom, propertyType, price: { $gt: minPrice, $lt: maxPrice } })
+            .sort({ createdAt: -1 });
     }
 
     async getOnePost(id) {
-        return CamposModel.findById(id)
+        return CamposModel.findById(id);
     }
 
     async create(data, token) {

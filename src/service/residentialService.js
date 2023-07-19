@@ -6,12 +6,15 @@ import { checkAuth } from '../utils/_index.js';
 
 class ResidentialService {
 
-    async getPosts() {
-        return await ResidentialModel.find().sort({ createdAt: -1 });
+    async getPosts(params) {
+        const { advertiseType, bathRoom, bedRoom, category, parkingLots, priceRange: { minPrice, maxPrice } } = params;
+        return await ResidentialModel
+            .find({ advertiseType, bathRoom, bedRoom, category, parkingLots, price: { $gt: minPrice, $lt: maxPrice } })
+            .sort({ createdAt: -1 });
     }
 
     async getOnePost(id) {
-        return ResidentialModel.findById(id)
+        return ResidentialModel.findById(id);
     }
 
     async create(data, token) {

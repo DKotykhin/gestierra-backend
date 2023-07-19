@@ -50,6 +50,18 @@ export const residentialTypeDefs = `#graphql
         latitude: Float
         longitude: Float
     }
+    input PriceRange {
+        minPrice: Int
+        maxPrice: Int
+    }
+    input ResidentialParamsInput {
+        advertiseType: AdvertiseTypes
+        category: CategoryTypes
+        priceRange: PriceRange
+        parkingLots: Int
+        bathRoom: Int
+        bedRoom: Int
+    }
     input CreateResidentialPostInput {
         title: String
         category: CategoryTypes
@@ -91,7 +103,7 @@ export const residentialTypeDefs = `#graphql
     }
 
     type Query {
-        getResidentialPosts: [ResidentialPost]
+        getResidentialPosts(residentialParamsInput: ResidentialParamsInput): [ResidentialPost]
         getOneResidentialPost(_id: String): ResidentialPost
     }
     type Mutation {
