@@ -17,7 +17,7 @@ const queryResolver = {
             return {
                 user,
                 token,
-                message: `User ${user.userName} successfully created`,
+                message: `User ${user.userName} successfully logged`,
             };
         },
 

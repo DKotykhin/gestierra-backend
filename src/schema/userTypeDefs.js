@@ -3,13 +3,19 @@ export const userTypeDefs = `#graphql
   type User {
       _id: ID!
       userName: String!
-      email: String!             
+      email: String! 
+      resetPassword: ResetPassword            
       createdAt: Date                    
   }
   type UserWithToken {
       user: User        
       token: String
       message: String              
+  }
+  type ResetPassword {
+      token: String
+      expire: Date
+      changed: Date
   }
   type UserDeleteResponse {        
       userStatus: UserDeleteStatus

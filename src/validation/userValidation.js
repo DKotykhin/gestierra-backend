@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import { GraphQLError } from 'graphql';
 
 const userSchema = yup.object().shape({
-    name: yup.string().min(3).max(100),
+    userName: yup.string().min(3).max(100),
     email: yup.string().email().max(100),
     password: yup.string().min(8).max(100),
 });

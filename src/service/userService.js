@@ -75,6 +75,7 @@ class UserService {
     }
 
     async resetPassword(email) {
+        await userValidate({ email });
         const user = await UserModel.findOne({ email });
         if (!user) {
             throw new GraphQLError("Can't find user", { extensions: { code: 'BAD_USER_INPUT' } })
@@ -105,7 +106,8 @@ class UserService {
     }
 
     async setNewPassword({ token, password }) {
-
+        await userValidate({ password });
+        
         const passwordHash = await createPasswordHash(password);
         const updatedUser = await UserModel.findOneAndUpdate(
             { 'resetPassword.token': token, 'resetPassword.expire': { $gt: Date.now() } },
