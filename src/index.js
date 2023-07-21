@@ -15,8 +15,10 @@ import router from './router/router.js';
 
 import 'dotenv/config';
 
+const MONGO_DB = (process.env.NODE_ENV === 'test') ? process.env.MONGO_DB_TEST : process.env.MONGO_DB;
+
 mongoose
-    .connect(process.env.MONGO_DB)
+    .connect(MONGO_DB)
     .then(() => console.log('Mongo DB successfully connected...'))
     .catch((err) => console.log('Mongo DB Error:', err))
 
@@ -61,3 +63,5 @@ app.use('/graphql', cors(),
 app.use(errorHandler);
 
 await new Promise((resolve) => httpServer.listen({ port }, resolve));
+
+export default app; // for testing
